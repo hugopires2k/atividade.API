@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rick and Morty Wiki</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
@@ -13,8 +14,20 @@
     </header>
 
     <main id="container">
-        </main>
+        <!-- Cards vão ser inseridos pelo JS -->
+    </main>
+
+    <button id="get-location">Mostrar minha localização</button>
+    <p id="location"></p>
 
     <script src="script.js"></script>
+    <script>
+        // Registrar service worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log('Service Worker registrado com sucesso!'))
+            .catch(err => console.error('Erro no registro do SW:', err));
+        }
+    </script>
 </body>
 </html>

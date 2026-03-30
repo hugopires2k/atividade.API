@@ -14,19 +14,22 @@
     </header>
 
     <main id="container">
-        <!-- Cards vão ser inseridos pelo JS -->
+        <!-- Cards inseridos pelo JS -->
     </main>
 
-    <button id="get-location">Mostrar minha localização</button>
-    <p id="location"></p>
+    <!-- Botão de câmera -->
+    <button id="open-camera">Abrir câmera</button>
+    <video id="camera" autoplay style="display:none;"></video>
+    <canvas id="snapshot" style="display:none;"></canvas>
+    <button id="take-photo" style="display:none;">Tirar foto</button>
 
     <script src="script.js"></script>
     <script>
-        // Registrar service worker para PWA
+        // Registrar service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log('Service Worker registrado com sucesso!'))
-            .catch(err => console.error('Erro no registro do SW:', err));
+            .then(() => console.log('Service Worker registrado!'))
+            .catch(err => console.error('Erro SW:', err));
         }
     </script>
 </body>

@@ -1,27 +1,8 @@
-const CACHE_NAME = "rick-morty-cache-v1";
-const urlsToCache = [
-  ".",
-  "index.html",
-  "style.css",
-  "script.js",
-  "manifest.json"
-];
+const CACHE_NAME="rm-cache-v1";
+const urlsToCache=[".","index.html","style.css","script.js","manifest.json"];
 
-// Instalando SW e cacheando arquivos
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-    );
-});
-
-// Ativando SW
-self.addEventListener('activate', event => {
-    console.log("Service Worker ativado!");
-});
-
-// Interceptando requests
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request).then(resp => resp || fetch(event.request))
-    );
+self.addEventListener('install', e=>{ e.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(urlsToCache)))});
+self.addEventListener('activate', e=>{ console.log("Service Worker ativado!");});
+self.addEventListener('fetch', e=>{
+    e.respondWith(caches.match(e.request).then(resp=>resp || fetch(e.request)));
 });

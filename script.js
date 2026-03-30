@@ -1,21 +1,18 @@
 const container = document.getElementById('container');
-const locationBtn = document.getElementById('get-location');
-const locationText = document.getElementById('location');
 
 // Buscar personagens da API
 async function getCharacters() {
     try {
-        const response = await fetch('https://rickandmortyapi.com/api/character');
-        const data = await response.json();
+        const res = await fetch('https://rickandmortyapi.com/api/character');
+        const data = await res.json();
         renderCards(data.results);
-    } catch (error) {
-        container.innerHTML = "<p style='color:red;'>Erro ao buscar dados.</p>";
-        console.error("Erro ao buscar dados:", error);
+    } catch(e){
+        container.innerHTML="<p style='color:red;'>Erro ao buscar dados.</p>";
     }
 }
 
-function renderCards(characters) {
-    container.innerHTML = characters.map(char => `
+function renderCards(chars){
+    container.innerHTML = chars.map(char=>`
         <div class="card">
             <img src="${char.image}" alt="${char.name}">
             <div class="card-info">
@@ -29,18 +26,24 @@ function renderCards(characters) {
     `).join('');
 }
 
-// Recurso de hardware: pegar localização
-locationBtn.addEventListener('click', () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-            locationText.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;
-        }, err => {
-            locationText.textContent = 'Erro ao acessar localização.';
-        });
-    } else {
-        locationText.textContent = 'Geolocalização não suportada.';
-    }
+getCharacters();
+
+// --------- Recurso de hardware: Câmera ---------
+const openCameraBtn = document.getElementById('open-camera');
+const takePhotoBtn = document.getElementById('take-photo');
+const video = document.getElementById('camera');
+const canvas = document.getElementById('snapshot');
+
+openCameraBtn.addEventListener('click', async () => {
+    video.style.display = 'block';
+    takePhotoBtn.style.display = 'block';
+    const stream = await navigator.mediaDevices.getUserMedia({video:true});
+    video.srcObject = stream;
 });
 
-// Iniciar
-getCharacters();
+takePhotoBtn.addEventListener('click', ()=>{
+    canvas.style.display = 'block';
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video,0,0);
+});
